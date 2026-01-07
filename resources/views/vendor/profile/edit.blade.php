@@ -47,6 +47,22 @@
                         <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 2MB. Accepted formats: JPG, PNG,
                             WEBP. {{ $vendor->qr_image_path ? 'Leave empty to keep current image.' : '' }}</p>
                         <x-input-error for="qr_image" class="mt-2" />
+
+                        <!-- Image Preview -->
+                        <div id="imagePreview" class="mt-4 hidden">
+                            <x-label value="Preview" />
+                            <img id="previewImg" src="" alt="QR Code Preview"
+                                class="mt-2 w-64 rounded-md shadow-md">
+                            <button type="button" onclick="clearPreview()"
+                                class="mt-2 text-sm text-red-600 hover:text-red-800 dark:text-red-400">
+                                Remove
+                            </button>
+                        </div>
+
+                        <!-- File Size Error -->
+                        <p id="fileSizeError" class="text-sm text-red-600 dark:text-red-400 mt-2 hidden">
+                            File size exceeds 2MB. Please choose a smaller image.
+                        </p>
                     </div>
 
                     <div class="flex items-center justify-end">
@@ -58,4 +74,46 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const qrImageInput = document.getElementById('qr_image');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileSizeError = document.getElementById('fileSizeError');
+        const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+        qrImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+
+            // Hide error initially
+            fileSizeError.classList.add('hidden');
+
+            if (file) {
+                // Check file size
+                if (file.size > maxSize) {
+                    fileSizeError.classList.remove('hidden');
+                    imagePreview.classList.add('hidden');
+                    e.target.value = ''; // Clear the input
+                    return;
+                }
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.classList.add('hidden');
+            }
+        });
+
+        function clearPreview() {
+            qrImageInput.value = '';
+            imagePreview.classList.add('hidden');
+            previewImg.src = '';
+            fileSizeError.classList.add('hidden');
+        }
+    </script>
 </x-app-layout>

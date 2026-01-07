@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Vendor;
 use App\Models\Menu;
-use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
