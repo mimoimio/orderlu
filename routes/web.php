@@ -24,12 +24,12 @@ Route::middleware([
     Route::middleware(['customer'])->prefix('customer')->name('customer.')->group(function () {
         Route::get('/vendors', [CustomerController::class, 'index'])->name('vendors.index');
         Route::get('/vendors/{vendor}', [CustomerController::class, 'show'])->name('vendors.show');
-        Route::get('/menus/{menu}', [CustomerController::class, 'showMenu'])->name('menus.show');
 
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/checkout', [OrderController::class, 'create'])->name('orders.create');
-        Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+        Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     });
 
     // Vendor Routes
@@ -40,11 +40,13 @@ Route::middleware([
         Route::get('/orders/preparing', [VendorOrderController::class, 'preparingOrders'])->name('orders.preparing');
         Route::get('/orders/completed', [VendorOrderController::class, 'completedOrders'])->name('orders.completed');
         Route::get('/orders/{order}', [VendorOrderController::class, 'show'])->name('orders.show');
+
+        Route::get('/profile', [VendorProfileController::class, 'edit'])->name('profile.edit');
+
         Route::post('/orders/{order}/verify', [VendorOrderController::class, 'verifyPayment'])->name('orders.verify');
         Route::post('/orders/{order}/reject', [VendorOrderController::class, 'rejectPayment'])->name('orders.reject');
         Route::post('/orders/{order}/complete', [VendorOrderController::class, 'complete'])->name('orders.complete');
 
-        Route::get('/profile', [VendorProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/profile', [VendorProfileController::class, 'update'])->name('profile.update');
     });
 });

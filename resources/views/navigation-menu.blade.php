@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="backdrop-blur sticky bg-gray-900/90 top-0">
+<nav x-data="{ open: false }"
+    class={{ 'backdrop-blur sticky  top-0' . (Auth::user()->isCustomer() ? 'bg-green-400/90' : 'bg-red-400/90') }}>
     {{-- border-b border-gray-100 dark:border-gray-700 dark:bg-gray-900   --}}
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
