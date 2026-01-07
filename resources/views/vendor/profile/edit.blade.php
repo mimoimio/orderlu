@@ -44,7 +44,7 @@
                         <input type="file" id="qr_image" name="qr_image"
                             accept="image/jpeg,image/png,image/jpg,image/webp"
                             class="mt-1 block w-full text-sm text-gray-900 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer bg-gray-50 dark:bg-gray-900 focus:outline-none">
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 2MB. Accepted formats: JPG, PNG,
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 4MB. Accepted formats: JPG, PNG,
                             WEBP. {{ $vendor->qr_image_path ? 'Leave empty to keep current image.' : '' }}</p>
                         <x-input-error for="qr_image" class="mt-2" />
 
@@ -61,7 +61,7 @@
 
                         <!-- File Size Error -->
                         <p id="fileSizeError" class="text-sm text-red-600 dark:text-red-400 mt-2 hidden">
-                            File size exceeds 2MB. Please choose a smaller image.
+                            File size exceeds 4MB. Please choose a smaller image.
                         </p>
                     </div>
 
@@ -80,7 +80,7 @@
         const imagePreview = document.getElementById('imagePreview');
         const previewImg = document.getElementById('previewImg');
         const fileSizeError = document.getElementById('fileSizeError');
-        const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        const maxSize = 4 * 1024 * 1024; // 4MB in bytes
 
         qrImageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
