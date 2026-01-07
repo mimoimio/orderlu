@@ -29,6 +29,15 @@
                                 @if ($menu->image_path)
                                     <img src="{{ asset('storage/' . $menu->image_path) }}" alt="{{ $menu->name }}"
                                         class="w-full h-48 object-cover rounded-md mb-4">
+                                @else
+                                    <div
+                                        class="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-md mb-4 flex items-center justify-center">
+                                        <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
                                 @endif
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
                                     {{ $menu->name }}
@@ -93,7 +102,7 @@
             if (cart.length > 0 && cart[0].vendor_id !== currentVendorId) {
                 if (confirm(
                         'You have items from another vendor in your cart. Do you want to clear them and start a new order here?'
-                        )) {
+                    )) {
                     localStorage.removeItem('cart');
                     updateCartCount();
                     cartModified = false;

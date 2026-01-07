@@ -33,10 +33,6 @@
                     </li>
                     <li class="flex items-start">
                         <span class="text-indigo-500 mr-2">✓</span>
-                        <span>Track your order status in real-time</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-indigo-500 mr-2">✓</span>
                         <span>Get notified when order is ready</span>
                     </li>
                 </ul>
