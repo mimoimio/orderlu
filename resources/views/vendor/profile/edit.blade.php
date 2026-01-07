@@ -13,6 +13,12 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="bg-red-50 dark:bg-red-900 border-l-4 border-red-400 p-4 mb-6">
+                    <p class="text-sm text-red-700 dark:text-red-200">{{ session('error') }}</p>
+                </div>
+            @endif
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <form action="{{ route('vendor.profile.update') }}" method="POST" enctype="multipart/form-data"
                     class="space-y-6">

@@ -13,6 +13,10 @@ class VendorOrderController extends Controller
      */
     public function newOrders()
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         $orders = Auth::user()->vendor->orders()
             ->where('status', 'pending_payment')
             ->with(['user', 'orderItems.menu'])
@@ -27,6 +31,10 @@ class VendorOrderController extends Controller
      */
     public function preparingOrders()
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         $orders = Auth::user()->vendor->orders()
             ->where('status', 'preparing')
             ->with(['user', 'orderItems.menu'])
@@ -41,6 +49,10 @@ class VendorOrderController extends Controller
      */
     public function completedOrders()
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         $orders = Auth::user()->vendor->orders()
             ->where('status', 'done')
             ->with(['user', 'orderItems.menu'])

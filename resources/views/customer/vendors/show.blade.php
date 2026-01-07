@@ -5,6 +5,10 @@
                 {{ $vendor->business_name }}
             </h2>
             <div class="flex items-center space-x-4">
+                <button onclick="clearCart()"
+                    class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
+                    Clear Cart
+                </button>
                 <button onclick="viewCart()"
                     class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                     View Cart (<span id="cart-count">0</span>)
@@ -55,6 +59,9 @@
     </div>
 
     <script>
+        const currentVendorId = {{ $vendor->id }};
+        let cartModified = false;
+
         // Cart management using localStorage
         function getCart() {
             return JSON.parse(localStorage.getItem('cart') || '[]');
@@ -63,12 +70,38 @@
         function saveCart(cart) {
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
+            cartModified = true;
         }
 
         function updateCartCount() {
             const cart = getCart();
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        function clearCart() {
+            if (confirm('Clear all items from cart?')) {
+                localStorage.removeItem('cart');
+                updateCartCount();
+                cartModified = false;
+                alert('Cart cleared!');
+            }
+        }
+
+        function checkExistingCart() {
+            const cart = getCart();
+            if (cart.length > 0 && cart[0].vendor_id !== currentVendorId) {
+                if (confirm(
+                        'You have items from another vendor in your cart. Do you want to clear them and start a new order here?'
+                        )) {
+                    localStorage.removeItem('cart');
+                    updateCartCount();
+                    cartModified = false;
+                } else {
+                    // Redirect back to vendors list
+                    window.location.href = '{{ route('customer.vendors.index') }}';
+                }
+            }
         }
 
         function addToCart(menuId, menuName, price, vendorId) {
@@ -107,9 +140,23 @@
                 alert('Cart is empty!');
                 return;
             }
+            cartModified = false; // Don't warn when going to checkout
             window.location.href = '{{ route('customer.orders.create') }}?cart=' + encodeURIComponent(JSON.stringify(
                 cart));
         }
+
+        // Warn before leaving page with items in cart
+        window.addEventListener('beforeunload', function(e) {
+            const cart = getCart();
+            if (cart.length > 0 && cartModified) {
+                e.preventDefault();
+                e.returnValue = 'You have items in your cart. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+
+        // Check for existing cart from different vendor on page load
+        checkExistingCart();
 
         // Update cart count on page load
         updateCartCount();

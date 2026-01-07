@@ -14,6 +14,10 @@ class MenuController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         $menus = Auth::user()->vendor->menus()->latest()->get();
         return view('vendor.menus.index', compact('menus'));
     }
@@ -23,6 +27,10 @@ class MenuController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         return view('vendor.menus.create');
     }
 
@@ -31,6 +39,10 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->vendor) {
+            return redirect()->route('vendor.profile.edit')->with('error', 'Please set up your vendor profile first.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
